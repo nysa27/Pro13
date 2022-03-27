@@ -1,135 +1,90 @@
-var garden,rabbit,apple,orangeL,redL;
-var gardenImg,rabbitImg,carrotImg,orangeImg,redImg;
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Constraint = Matter.Constraint;
+
+var engine, world;
+var canvas;
+var palyer, playerBase;
+var computer, computerBase;
+
+var arrow;
 
 
-function preload(){
-  gardenImg = loadImage("garden.png");
-  rabbitImg = loadImage("rabbit.png");
-  appleImg = loadImage("apple.png");
-  orangeImg = loadImage("orangeLeaf.png");
-  redImg = loadImage("redImage.png");
-}
+function setup() {
+  canvas = createCanvas(windowWidth, windowHeight);
 
+  engine = Engine.create();
+  world = engine.world;
 
-function setup(){
+  playerBase = new PlayerBase(300, random(450, height - 300), 180, 150);
+  player = new Player(285, playerBase.body.position.y - 153, 50, 180);
+  playerArcher = new PlayerArcher(
+    340,
+    playerBase.body.position.y - 180,
+    120,
+    120
+  );
+
+  computerBase = new ComputerBase(
+    width - 300,
+    random(450, height - 300),
+    180,
+    150
+  );
+  computer = new Computer(
+    width - 280,
+    computerBase.body.position.y - 153,
+    50,
+    180
+  );
+  computerArcher = new ComputerArcher(
+    width - 340,
+    computerBase.body.position.y - 180,
+    120,
+    120
+  );
   
-  createCanvas(400,400);
-// Moving background
-garden=createSprite(200,200);
-garden.addImage(gardenImg);
-
-
-//creating boy running
-rabbit = createSprite(160,340,20,20);
-rabbit.scale =0.09;
-rabbit.addImage(rabbitImg);
+  arrow = new PlayerArrow(playerArcher.body.position.x, playerArcher.body.position.y, 100, 10);
+  
 }
 
 function draw() {
-  background(0);
-  
-  // boy moving on Xaxis with mouse'
-  rabbit.x = World.mouseX;
-  
-  edges= createEdgeSprites();
-  rabbit.collide(edges);
-  
-   drawSprites();
-  
-  var select_sprites = Math.round(random(1,3));
-  
-  if (frameCount % 80 == 0) {
-    if (select_sprites == 1) {
-      createApples();
-    } else if (select_sprites == 2) {
-      createOrange();
-    }else {
-      createRed();
-    }
-  }
+  background(180);
 
+  Engine.update(engine);
+
+  // Title
+  fill("#FFFF");
+  textAlign("center");
+  textSize(40);
+  text("EPIC ARCHERY", width / 2, 100);
+
+ 
+  playerBase.display();
+  player.display();
+  
+
+  computerBase.display();
+  computer.display();
+  
+  playerArcher.display();
+  computerArcher.display()
+  
+  // if(keyCode === 32){
+  //   arrow.display()
+  //   arrow.shoot(playerArcher);
+  //  }
+
+  //  if(keyCode === 32){
+  //   arrow.shoot(playerArcher.body.angle);
+  //  }
+   
+  //  if(keyCode === 32){
+  //   arrow.display()
+  //   arrow.shoot(playerArcher.body.angle);
+  //  }
 }
-
-function createApples() {
-apple = createSprite(random(50, 350),40, 10, 10);
-apple.addImage(appleImg);
-apple.scale=0.07;
-apple.velocityY = 3;
-apple.lifetime = 150;
-  
-}
-
-function createOrange() {
-orangeL = createSprite(random(50, 350),40, 10, 10);
-orangeL.addImage(orangeImg);
-orangeL.scale=0.08;
-orangeL.velocityY = 3;
-orangeL.lifetime = 150;
-}
-
-function createRed() {
-redL = createSprite(random(50, 350),40, 10, 10);
-redL.addImage(redImg);
-redL.scale=0.06;
-  redL.velocityY = 3;
-  redL.lifetime = 150;
-}
-// var select_sprites = Math(random(1,3));
-// var select_sprites = Math.random(random(1,3));
-// var select_sprites = Math.round(1,3);
-// var select_sprites = Math.round(random(1,3))
-
-
-// if (frameCountc% 50 == 0){
-// if (select_sprites == 1 ) {
-// createOrange();
-// } else if (select_sprites == 2) {
-  createRed();
-// }else {
-createRed();
- // }
-
-// if (frameCountc% 50 == 0){
-// if (select_sprites == 1 ) {
-// createApples ();
-//} else if (select_sprites == 2) {
-//        createOrange();
-// }
-//   }
-
-
-// if (frameCount / 80 == 0) {
-// if (select_sprites == 1 ){
-//     createApples();
-// } else if (select_sprites == 2){
-//    createOrange();
-// }else  {
-//     createRed();  
-//   }            
-// }
-
-
-// if (frameCount % 80 = 0) {
-// if (select_sprites == 1) {
-// createApples();
-// } else if(select_sprites == 2) {
-// createOranges();
-//}else   }
-// createRed();
-//   }
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
